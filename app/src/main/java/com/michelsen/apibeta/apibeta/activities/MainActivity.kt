@@ -11,8 +11,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var endpointHelper: EndpointHelper = EndpointHelper()
+        var endpointHelper = EndpointHelper()
         endpointHelper.getBearerToken()
-        text_view.setText(endpointHelper.getBearerToken());
     }
 }
