@@ -2,8 +2,8 @@ package com.michelsen.apibeta.apibeta.helpers
 
 
 
+import android.content.Context
 import android.content.res.Resources
-import android.provider.Settings.Global.getString
 import com.github.kittinunf.fuel.Fuel
 import com.michelsen.apibeta.apibeta.R
 import java.util.*
@@ -11,7 +11,7 @@ import java.util.*
 /**
  * Created by Ole-Martin Michelsen on 20.01.2018.
  */
-class EndpointHelper {
+class EndpointHelper (context: Context){
     private var clientId : String
     private val baseUrl = "https://api.sbanken.no/"
     private var appSecret : String
@@ -19,12 +19,13 @@ class EndpointHelper {
     private val identityServerPrefix = "IdentityServer/connect/token"
     private var credentials :String
     var headers: MutableMap<String, String> = mutableMapOf()
+    var token: String = "asd"
 
     init {
         headers.put("Accept", "application/json")
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
-        clientId = Resources.getSystem().getString(R.string.client_id)
-        appSecret =  Resources.getSystem().getString(R.string.app_secret)
+        clientId = context.getString(R.string.client_id)
+        appSecret =  context.getString(R.string.app_secret)
         credentials = clientId + ":" + appSecret
         headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(credentials.toByteArray()))
     }
@@ -37,15 +38,19 @@ class EndpointHelper {
     } */
     //TODO: base64 credentials, body contain the missing peace
 
-    fun getBearerToken(): String {
-        var answer: String = "asd"
+    fun getBearerToken(completion : (accessToken: String ) -> Unit){
+
         Fuel.post(baseUrl + identityServerPrefix)
                 .header(headers)
                 .body("grant_type=client_credentials")
                 .response { request, response, result ->
-            answer = response.toString()
+
+            completion(response.toString())
         }
 
-        return answer
+    }
+
+    fun registerToken(response: String) : Unit{
+        token = response;
     }
 }
