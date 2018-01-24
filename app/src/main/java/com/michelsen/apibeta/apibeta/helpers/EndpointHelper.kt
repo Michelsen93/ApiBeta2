@@ -7,6 +7,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.core.Json
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.michelsen.apibeta.apibeta.R
+import com.michelsen.apibeta.apibeta.models.Token
 import java.util.*
 
 /**
@@ -15,8 +16,9 @@ import java.util.*
 class EndpointHelper(context: Context) {
     private var clientId: String
     private val baseUrl = "https://api.sbanken.no/"
+    private var userId: String
     private var appSecret: String
-    val accountsPrefix = "api/v1/Accounts/"
+    val accountsPrefix = "Bank/api/v1/Accounts/"
     private val identityServerPrefix = "IdentityServer/connect/token"
     private var credentials: String
     var headers: MutableMap<String, String> = mutableMapOf()
@@ -27,12 +29,21 @@ class EndpointHelper(context: Context) {
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
         clientId = context.getString(R.string.client_id)
         appSecret = context.getString(R.string.app_secret)
+        userId = context.getString(R.string.user_id)
         credentials = clientId + ":" + appSecret
         headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(credentials.toByteArray()))
     }
 
 
     //TODO: base64 credentials, body contain the missing peace
+
+    fun getAccounts(token: String, completion: (accounts: Json) -> Unit) {
+        Fuel.get(baseUrl + accountsPrefix + userId)
+                .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
+                .responseJson {request, response, result ->
+                    completion(result.component1()!!)
+                }
+    }
 
     fun getBearerToken(completion: (accessToken: Json) -> Unit) {
 

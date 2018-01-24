@@ -5,33 +5,29 @@ import android.os.Bundle
 import android.view.View
 import com.google.gson.Gson
 import com.michelsen.apibeta.apibeta.R
+import com.michelsen.apibeta.apibeta.helpers.Data
 import com.michelsen.apibeta.apibeta.helpers.EndpointHelper
 import com.michelsen.apibeta.apibeta.models.Token
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private var token: Token? = null
-    private var list: String? = null
-    private var endpointHelper: EndpointHelper? = null
+    private var mData: Data? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mData = Data(this)
 
-        endpointHelper = EndpointHelper(this)
-        endpointHelper?.getBearerToken(completion = { accessToken ->
-            token = Gson().fromJson(accessToken.content, Token::class.java)
-        })
+
 
 
     }
 
 
     fun buttonClick(view: View) {
-        text_view.text = token?.token
+        mData?.getAccounts();
     }
 
     fun buttonClick2(view: View) {
-
     }
 
 
