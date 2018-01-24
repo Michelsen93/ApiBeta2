@@ -12,14 +12,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private var token: Token? = null
     private var list: String? = null
+    private var endpointHelper: EndpointHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var endpointHelper = EndpointHelper(this)
-        endpointHelper.getBearerToken(completion = { accessToken ->
+        endpointHelper = EndpointHelper(this)
+        endpointHelper?.getBearerToken(completion = { accessToken ->
             token = Gson().fromJson(accessToken.content, Token::class.java)
-            endpointHelper.token = token?.token!!
         })
 
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun buttonClick2(view: View) {
-        text_view.text = list
+
     }
 
 

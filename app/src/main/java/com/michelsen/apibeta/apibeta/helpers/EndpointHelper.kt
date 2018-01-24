@@ -20,7 +20,7 @@ class EndpointHelper(context: Context) {
     private val identityServerPrefix = "IdentityServer/connect/token"
     private var credentials: String
     var headers: MutableMap<String, String> = mutableMapOf()
-    var token: String = "asd"
+
 
     init {
         headers.put("Accept", "application/json")
@@ -31,14 +31,7 @@ class EndpointHelper(context: Context) {
         headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(credentials.toByteArray()))
     }
 
-   /* fun getAccounts(completion: (accounts: Json) -> Unit) {
-        headers.put("Authorization", "Basic " + token)
-        Fuel.get(baseUrl + accountsPrefix)
-                .header(headers)
-                .responseJson() { request, response, result ->
-                    completion(result?.component1()!!)
-                }
-    }*/
+
     //TODO: base64 credentials, body contain the missing peace
 
     fun getBearerToken(completion: (accessToken: Json) -> Unit) {
