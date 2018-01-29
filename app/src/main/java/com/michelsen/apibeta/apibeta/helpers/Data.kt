@@ -1,6 +1,7 @@
 package com.michelsen.apibeta.apibeta.helpers
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.michelsen.apibeta.apibeta.models.Account
@@ -8,12 +9,12 @@ import com.michelsen.apibeta.apibeta.models.Accounts
 import com.michelsen.apibeta.apibeta.models.Token
 
 class Data (context: Context) {
-    var accounts: List<Account>
+    var accounts: Accounts? = null
     var token: Token? = null
     private var endpointHelper: EndpointHelper? = null
 
     init {
-        accounts = ArrayList<Account>()
+
         endpointHelper = EndpointHelper(context)
         getToken();
     }
@@ -26,7 +27,7 @@ class Data (context: Context) {
 
     fun getAccounts(){
         endpointHelper?.getAccounts(token?.token!!, completion = { accounts ->
-            this.accounts = Gson().fromJson<List<Account>>(accounts.content, Accounts::class.java)
+            this.accounts = Gson().fromJson(accounts.content, Accounts::class.java)
         })
     }
 
