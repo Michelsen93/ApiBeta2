@@ -37,12 +37,7 @@ class Data(context: Context){
     }
 
     fun getDefaultAccount(): Account? {
-        for (account in accounts!!.accounts) {
-            if (account.defaultAccount) {
-                return account
-            }
-        }
-        return null;
+        return accounts!!.accounts.firstOrNull { it.defaultAccount };
     }
 
 }
