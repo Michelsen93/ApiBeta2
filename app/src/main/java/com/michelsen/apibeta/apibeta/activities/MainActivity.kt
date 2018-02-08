@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         var str = ""
         var list = mData?.accounts?.accounts
         for (account in list!!) {
-            str += account.name + ", "
+            str += account.available
         }
         text_view.text = str
     }
