@@ -16,27 +16,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         mData = Data(this)
 
-
-
-
     }
-
 
     fun buttonClick(view: View) {
-        mData?.getAccounts();
+        var defaultAccount = mData?.getDefaultAccount()
+        text_view.text = defaultAccount?.name + " : " + defaultAccount?.balance
     }
-
-    /*
-     * Sample for using accounts
-     */
-    fun buttonClick2(view: View) {
-        var str = ""
-        var list = mData?.accounts?.accounts
-        for (account in list!!) {
-            str += account.available
-        }
-        text_view.text = str
-    }
-
 
 }

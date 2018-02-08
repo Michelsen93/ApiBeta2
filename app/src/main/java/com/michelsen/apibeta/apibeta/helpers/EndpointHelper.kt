@@ -6,6 +6,7 @@ import android.content.Context
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.core.Json
 import com.github.kittinunf.fuel.android.extension.responseJson
+import com.github.kittinunf.fuel.httpGet
 import com.michelsen.apibeta.apibeta.R
 import com.michelsen.apibeta.apibeta.models.Token
 import java.util.*
@@ -46,13 +47,18 @@ class EndpointHelper(context: Context) {
     }
 
     fun getBearerToken(completion: (accessToken: Json) -> Unit) {
-
         Fuel.post(baseUrl + identityServerPrefix)
                 .header(headers)
                 .body("grant_type=client_credentials")
                 .responseJson { request, response, result ->
                     completion(result.component1()!!)
                 }
+    }
+
+    //TODO - this should be in async task
+    fun getBearerTokenSync() : Json{
+        val (request, response, result) = (baseUrl + identityServerPrefix).httpGet().header(headers).body("grant_type=client_credentials").responseJson()
+        return result.component1()!!
     }
 
 }
