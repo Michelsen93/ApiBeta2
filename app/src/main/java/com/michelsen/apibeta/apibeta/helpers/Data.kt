@@ -9,25 +9,18 @@ import com.michelsen.apibeta.apibeta.models.Token
 class Data(context: Context){
     var accounts: Accounts? = null
     var token: Token? = null
-    private var endpointHelper: EndpointHelper? = null
+    var endpointHelper: EndpointHelper? = null
 
     init {
-
         endpointHelper = EndpointHelper(context)
-
         getToken()
-
-
     }
 
     private fun getToken() {
         endpointHelper?.getBearerToken(completion = { accessToken ->
             this.token = Gson().fromJson(accessToken.content, Token::class.java)
+            getAccounts()
         })
-        /*
-        val accessToken = endpointHelper?.getBearerTokenSync()
-        this.token = Gson().fromJson(accessToken.content, Token::class.java)
-        */
     }
 
     fun getAccounts() {
@@ -37,7 +30,9 @@ class Data(context: Context){
     }
 
     fun getDefaultAccount(): Account? {
-        return accounts!!.accounts.firstOrNull { it.defaultAccount };
+        var account = null
+        return accounts!!.accounts.firstOrNull { !it.defaultAccount };
     }
+
 
 }
