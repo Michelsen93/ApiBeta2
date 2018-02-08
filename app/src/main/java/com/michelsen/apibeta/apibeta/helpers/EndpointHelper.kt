@@ -41,7 +41,7 @@ class EndpointHelper(context: Context) {
     fun getAccounts(token: String, completion: (accounts: Json) -> Unit) {
         Fuel.get(baseUrl + accountsPrefix + userId)
                 .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
-                .responseJson {request, response, result ->
+                .responseJson { request, response, result ->
                     completion(result.component1()!!)
                 }
     }
@@ -55,10 +55,7 @@ class EndpointHelper(context: Context) {
                 }
     }
 
-    //TODO - this should be in async task
-    fun getBearerTokenSync() : Json{
-        val (request, response, result) = (baseUrl + identityServerPrefix).httpGet().header(headers).body("grant_type=client_credentials").responseJson()
-        return result.component1()!!
-    }
+    fun getTransactions(customerId: String, accountNumber: String, completion: (transactions: Json) -> Unit) {
 
+    }
 }

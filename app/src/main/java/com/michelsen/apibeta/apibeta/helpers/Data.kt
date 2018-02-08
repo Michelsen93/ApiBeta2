@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.michelsen.apibeta.apibeta.models.Account
 import com.michelsen.apibeta.apibeta.models.Accounts
 import com.michelsen.apibeta.apibeta.models.Token
+import com.michelsen.apibeta.apibeta.models.Transactions
 
 class Data(context: Context){
     var accounts: Accounts? = null
@@ -34,6 +35,9 @@ class Data(context: Context){
         return accounts!!.accounts.firstOrNull { !it.defaultAccount };
     }
 
+    fun getTransactionsFromAccount(account: Account) : Transactions? {
+        return null
+    }
 
 
 
