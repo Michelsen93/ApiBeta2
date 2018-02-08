@@ -29,10 +29,12 @@ class Data(context: Context){
         })
     }
 
+    //TODO : Better filter when filter is needed, This is just special for my account
     fun getDefaultAccount(): Account? {
-        var account = null
         return accounts!!.accounts.firstOrNull { !it.defaultAccount };
     }
+
+
 
 
 }
