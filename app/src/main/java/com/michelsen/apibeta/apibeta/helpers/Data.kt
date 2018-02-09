@@ -10,6 +10,7 @@ import com.michelsen.apibeta.apibeta.models.Transactions
 class Data(context: Context){
     var accounts: Accounts? = null
     var token: Token? = null
+    var transactions: Transactions? = null
     var endpointHelper: EndpointHelper? = null
 
     init {
@@ -35,8 +36,10 @@ class Data(context: Context){
         return accounts!!.accounts.firstOrNull { !it.defaultAccount };
     }
 
-    fun getTransactionsFromAccount(account: Account) : Transactions? {
-        return null
+    fun getTransactionsFromAccount(account: Account) {
+        endpointHelper?.getAccounts(token?.token!!, completion = { transactions ->
+            this.transactions = Gson().fromJson(transactions.content, Transactions::class.java)
+        })
     }
 
 

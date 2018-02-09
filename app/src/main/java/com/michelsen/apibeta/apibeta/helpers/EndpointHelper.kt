@@ -20,6 +20,7 @@ class EndpointHelper(context: Context) {
     private var userId: String
     private var appSecret: String
     val accountsPrefix = "Bank/api/v1/Accounts/"
+    val transactionsPrefix = "Bank/api/v1/Transactions/"
     private val identityServerPrefix = "IdentityServer/connect/token"
     private var credentials: String
     var headers: MutableMap<String, String> = mutableMapOf()
@@ -55,7 +56,12 @@ class EndpointHelper(context: Context) {
                 }
     }
 
-    fun getTransactions(customerId: String, accountNumber: String, completion: (transactions: Json) -> Unit) {
+    fun getTransactions(token: String, accountNumber: String, completion: (transactions: Json) -> Unit) {
+        Fuel.get(baseUrl + transactionsPrefix + userId + "/" + accountNumber)
+                .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
+                .responseJson {request, response, result ->
+                    completion(result.component1()!!)
+                }
 
     }
 }
