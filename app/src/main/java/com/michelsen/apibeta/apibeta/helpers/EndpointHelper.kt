@@ -1,14 +1,17 @@
 package com.michelsen.apibeta.apibeta.helpers
 
 
-import android.content.res.Resources
 import android.content.Context
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.core.Json
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.httpPost
+import com.google.gson.Gson
 import com.michelsen.apibeta.apibeta.R
 import com.michelsen.apibeta.apibeta.models.Token
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
@@ -37,8 +40,6 @@ class EndpointHelper(context: Context) {
     }
 
 
-    //TODO: base64 credentials, body contain the missing peace
-
     fun getAccounts(token: String, completion: (accounts: Json) -> Unit) {
         Fuel.get(baseUrl + accountsPrefix + userId)
                 .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
@@ -64,4 +65,45 @@ class EndpointHelper(context: Context) {
                 }
 
     }
+
+    fun getBearerTokenBlockMode(): Token {
+        val (request, response, result) = (baseUrl + identityServerPrefix).httpPost().header(headers).body("grant_type=client_credentials").responseJson();
+        return Gson().fromJson(result.component1()?.content, Token::class.java)
+    }
+
+    fun observableTokenRequest(): Observable<Token?>? {
+        return Observable.defer<Token> {
+            return@defer Observable.just(getBearerTokenBlockMode())
+        }
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
