@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 import com.michelsen.apibeta.apibeta.R
+import com.michelsen.apibeta.apibeta.models.Accounts
 import com.michelsen.apibeta.apibeta.models.Token
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -60,7 +61,7 @@ class EndpointHelper(context: Context) {
     fun getTransactions(token: String, accountNumber: String, completion: (transactions: Json) -> Unit) {
         Fuel.get(baseUrl + transactionsPrefix + userId + "/" + accountNumber)
                 .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
-                .responseJson {request, response, result ->
+                .responseJson { request, response, result ->
                     completion(result.component1()!!)
                 }
 
@@ -71,12 +72,25 @@ class EndpointHelper(context: Context) {
         return Gson().fromJson(result.component1()?.content, Token::class.java)
     }
 
-    fun observableTokenRequest(): Observable<Token?>? {
+    fun getAccountsBlockMode(token: String): Accounts {
+        val (request, response, result) = (baseUrl + accountsPrefix + userId).httpGet()
+                .header(mapOf("Authorization" to "Bearer  " + token, "Accept" to "application/json", "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8"))
+                .responseJson();
+        return Gson().fromJson(result.component1()?.content, Accounts::class.java)
+    }
+
+    fun getTokenObservable(): Observable<Token?>? {
         return Observable.defer<Token> {
             return@defer Observable.just(getBearerTokenBlockMode())
         }
-
     }
+
+    fun getAccountsObservable(token: String): Observable<Accounts?>? {
+        return Observable.defer<Accounts> {
+            return@defer Observable.just(getAccountsBlockMode(token))
+        }
+    }
+
 
 }
 

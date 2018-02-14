@@ -7,7 +7,6 @@ import com.michelsen.apibeta.apibeta.models.Accounts
 import com.michelsen.apibeta.apibeta.models.Token
 import com.michelsen.apibeta.apibeta.models.Transactions
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscriber
 
 class Data(context: Context){
     var accounts: Accounts? = null
@@ -17,7 +16,7 @@ class Data(context: Context){
 
     init {
         endpointHelper = EndpointHelper(context)
-        endpointHelper?.observableTokenRequest()?.subscribeOn(Schedulers.io())?.subscribe( { result ->
+        endpointHelper?.getTokenObservable()?.subscribeOn(Schedulers.io())?.subscribe( { result ->
             this.token = result!!
         })
     }
@@ -43,6 +42,12 @@ class Data(context: Context){
     fun getTransactionsFromAccount(account: Account) {
         endpointHelper?.getAccounts(token?.token!!, completion = { transactions ->
             this.transactions = Gson().fromJson(transactions.content, Transactions::class.java)
+        })
+    }
+
+    fun initAccounts(token: Token): Unit {
+        endpointHelper?.getAccountsObservable(token!!.token)?.subscribeOn(Schedulers.io())?.subscribe( { result ->
+            this.accounts = result!!
         })
     }
 
