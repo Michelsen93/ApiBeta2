@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="24sp"
                 android:text="Kontonavn"
                 android:textColor="@color/standard_text_color" />
 
@@ -31,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="24sp"
                 android:text="saldo"
                 android:textColor="@color/standard_text_color"/>
         </LinearLayout>
