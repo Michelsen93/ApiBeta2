@@ -23,9 +23,8 @@ class MainActivity : AppCompatActivity() {
         endpointHelper.getTokenObservable()?.subscribeOn(Schedulers.io())?.subscribe({ token ->
             endpointHelper.getAccountsObservable(token!!.token)?.observeOn(AndroidSchedulers.mainThread())?.subscribeOn(Schedulers.io())?.subscribe({ accounts ->
                 var defaultAccount = AccountHelper().getDefaultAccount(accounts!!)
-                text_view.text = defaultAccount.name + ": " + defaultAccount.balance
+                //TODO : fill list thingy
             })
         })
-
     }
 }

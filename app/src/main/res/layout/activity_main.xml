@@ -7,21 +7,12 @@
     tools:context="com.michelsen.apibeta.apibeta.activities.MainActivity"
     android:orientation="vertical"
     android:gravity="center">
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_view"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Se Saldo"
-        android:background="#fff"
-        android:textAllCaps="false"
-        android:onClick="buttonClick"/>
+    </android.support.v7.widget.RecyclerView>
+
+
 
 </LinearLayout>
